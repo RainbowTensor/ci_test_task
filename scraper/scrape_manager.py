@@ -3,6 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
+from tqdm import tqdm
 
 from scraper.consts import EXTRACTOR_REGISTRY
 
@@ -21,8 +22,7 @@ class ScrapeManager():
 
     def start(self):
         series = []
-        for url in self.url_list:
-            print(url)
+        for url in tqdm(self.url_list):
             try:
                 soup = self.__open_and_parse_url(url)
             except:

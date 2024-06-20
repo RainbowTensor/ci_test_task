@@ -37,7 +37,7 @@ class CsvImporter():
         for column in df.columns:
             formatted_column = column.lower()
             for table_column in table_columns:
-                if formatted_column== table_column.lower():
+                if formatted_column == table_column.lower():
                     column_names[column] = table_column
 
         df = df.rename(columns=column_names)
@@ -65,31 +65,30 @@ class CsvImporter():
             set_columns.append(set_string)
 
         return ", ".join(set_columns)
-    
+
     def __build_insert_statement(self, row: pd.Series) -> str:
-        update_rows = self.__build_set_sql_statement(row.index, row.values)
+        update_rows = self.__build_set_sql_statement(
+            list(row.index), list(row.values))
         columns = ", ".join(row.index)
 
         def map_values(value):
             if type(value) == str:
                 return f'"{value}"'
-            
+
             if pd.isnull(value):
                 return "NULL"
-                        
+
             return str(value)
 
         values = [value for value in map(map_values, row.values)]
         values = ", ".join(values)
 
         insert_tatement = INSERT_STATEMENT.format(
-            table=self.table_name, 
-            columns= columns, 
-            values=values, 
-            index_column="URL", 
+            table=self.table_name,
+            columns=columns,
+            values=values,
+            index_column="URL",
             update_rows=update_rows
         )
 
         return insert_tatement
-
-
