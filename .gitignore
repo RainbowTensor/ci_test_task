@@ -1,0 +1,6 @@
+/ci_task
+__pycache__/
+*.py[cod]
+*.db
+*.pdf
+*.csv
